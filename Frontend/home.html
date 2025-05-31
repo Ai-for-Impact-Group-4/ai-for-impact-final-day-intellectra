@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoCycle AI – Smart E-Waste Exchange</title>
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+    crossorigin="anonymous"
+  />
+  <style>
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header */
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background-color:#1f7a8c;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .nav a {
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .nav a:hover,
+    .nav a:focus {
+      background-color:#1f7a8c;
+      outline: none;
+    }
+
+    /* Search & Menu icons */
+    .search {
+      display: flex;
+      gap: 1rem;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+    .search i {
+      color: white;
+    }
+
+    /* Main section */
+    .heading {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      gap: 2rem;
+    }
+    .heading .left {
+      max-width: 600px;
+    }
+    .heading p {
+      font-size: 1.25rem;
+      color: #1f7a8c;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .heading h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #1f7a8c;
+      line-height: 1.1;
+    }
+    .heading .left p:last-child {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #333;
+      font-weight: 400;
+    }
+    .heading button {
+      background-color: #1f7a8c;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .heading button:hover {
+      background-color: #1f7a8c;
+    }
+
+    /* Right empty box for potential image or illustration */
+    .heading .right {
+      flex: 1;
+      background: url('https://images.unsplash.com/photo-1581092795360-365accb194a9?auto=format&fit=crop&w=800&q=80') no-repeat center/cover;
+      border-radius: 20px;
+      min-height: 320px;
+      box-shadow: 0 10px 25px rgba(31,122,140,0.3);
+    }
+
+    /* Social media icons */
+    .socialmedia {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .socialmedia a {
+      color: #1f7a8c;
+      font-size: 1.6rem;
+      transition: color 0.3s ease;
+    }
+    .socialmedia a:hover,
+    .socialmedia a:focus {
+      color:#1f7a8c;
+      outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .heading {
+        flex-direction: column;
+        text-align: center;
+      }
+      .heading .right {
+        width: 100%;
+        min-height: 200px;
+        margin-top: 2rem;
+      }
+      .nav {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="logo" tabindex="0">EcoCycle AI</div>
+    <nav class="nav" aria-label="Primary Navigation">
+      <a href="home.html">Home</a>
+      <a href="identify.html">Identify E-Waste</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+    </nav>
+    <div class="search" aria-label="Search and menu icons">
+      <i class="fa-solid fa-search" aria-hidden="true"></i>
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </div>
+  </header>
+
+  <main class="heading">
+    <div class="left">
+      <p>Got Old Electronics?</p>
+      <h1>Recycle Smartly with EcoCycle AI</h1>
+      <p>Upload your e-waste, schedule pickups, and earn rewards!</p>
+      <button onclick="window.location.href='identify.html'">Get Started</button>
+
+      <div class="socialmedia" aria-label="Social media links">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="right" aria-hidden="true"></div>
+  </main>
+</body>
+</html>

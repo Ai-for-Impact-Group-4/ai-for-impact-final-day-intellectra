@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoCycle AI – E-Waste Identification</title> <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>EcoCycle AI</h1>
+    <p>Smart E-Waste Collection and Exchange Platform</p>
+  </header>
+
+  <section class="features">
+    <div class="feature-box">
+      <h3>📦 Identify E-Waste</h3>
+      <p>Upload an image or type the item name to classify your electronic waste.</p>
+    </div>
+    <div class="feature-box">
+      <h3>📍 Schedule Pickup</h3>
+      <p>Book a collector to pick up your item from your location — easy and fast.</p>
+    </div>
+    <div class="feature-box">
+      <h3>💰 Earn Rewards</h3>
+      <p>Exchange old electronics for money or green points. Recycle and get paid!</p>
+    L</div>
+  </section>
+
+  <section class="upload-section">
+    <h2>Upload Your E-Waste Item</h2>
+    <p>Drag & drop an image below or use our assistant.</p>
+
+    <div class="drop-box" id="dropArea">
+      <p>Drop your image here</p>
+      <label for="fileInput" class="upload-btn">Browse</label>
+      <input type="file" id="fileInput" accept="image/*" />
+    </div>
+
+    <canvas id="imageCanvas" style="max-width: 100%; height: auto; margin-top: 20px; display: none; border: 1px solid #ddd;"></canvas>
+
+    <button id="analyzeButton" style="margin-top: 20px; padding: 10px 20px; background-color: #1f7a8c; color: white; border: none; border-radius: 5px; cursor: pointer;">
+        Analyze E-Waste
+    </button>
+
+    <div id="results" style="margin-top: 30px; padding: 15px; background-color: #e6f7ff; border-left: 5px solid #1f7a8c; border-radius: 5px;">
+        </div>
+
+    </section>
+
+  <footer>
+    <p>© 2025 EcoCycle AI♻ </p>
+  </footer>
+
+  <script src="identify.js"></script> </body>
+</html>

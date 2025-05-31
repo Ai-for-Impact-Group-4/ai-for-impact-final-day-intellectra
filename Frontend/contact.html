@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoCycle AI – Contact Us</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #1f7a8c;
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a[aria-current="page"] {
+      background-color: #1f7a8c;
+    }
+
+    .contact-container {
+      max-width: 600px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-container h2 {
+      font-size: 2rem;
+      color: #1b5e20;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .contact-container p {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.2rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-form button {
+      background-color:#1f7a8c;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background-color: #1f7a8c;
+    }
+
+    footer {
+      background-color: #1f7a8c;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+      }
+
+      .contact-container {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>EcoCycle AI</h1>
+  </header>
+
+  <main class="contact-container">
+    <h2>Contact Us</h2>
+    <p>Have questions or need support? Reach out to us!</p>
+
+    <form class="contact-form" method="POST">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your Name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+
+      <button type="submit">Send Message</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>© 2025 EcoCycle AI ♻ | All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
