@@ -1,13 +1,13 @@
-AI for Impact Hackathon : Team Intellectra 
+#AI for Impact Hackathon : Team Intellectra 
 E-waste Identifier & Recycler : ECOCYCLE AI
 
-PROBLEM STATEMENT :
+#PROBLEM STATEMENT :
 Electronic waste or e-waste is a rapidly growing global environmental and health concern. Improper disposal of e-waste leads to the release of toxic heavy metals (like lead, mercury, cadmium) and other hazardous chemicals into the soil, water, and air, posing severe risks to ecosystems and human health. Many individuals are unaware of what constitutes e-waste, its associated dangers, or proper recycling channels. This project aims to address this lack of awareness and accessibility to recycling solutions.
 
-OUR SOLUTION : 
+#OUR SOLUTION : 
 Our "E-waste Identifier & Recycler" is an AI-powered web application designed to empower users to identify e-waste items, understand their potential hazards, and find nearby recycling options.
 
-THE APPLICATION HAS THE FOLLOWING FLOW :
+#THE APPLICATION HAS THE FOLLOWING FLOW :
 ~Image Upload: Users can upload an image of an item they suspect might be an e-waste.
 ~AI-Powered Identification: A custom-trained YOLO model(Yolov10n), deployed on a FastAPI backend, analyzes the uploaded image to determine if it is an e-waste and, if so, its specific type (e.g., laptop, smartphone, battery).
 Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer', 'Electronics', 'Headphone', 'Keyboard', 'Mobile', 'Modem', 'Mouse', 'PCB', 'Pendrive', 'Remote' and the map50-95 score is 
@@ -15,7 +15,7 @@ Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer
 ~Recycling Suggestions: The application provides a list of mock nearby recycling/selling stores, guiding users towards proper disposal channels. (For the MVP, this uses mock data, but is designed for future integration with real-time location services).
 This solution leverages cutting-edge AI for image recognition, combined with a user-friendly interface, to promote responsible e-waste management and contribute to environmental sustainability.
 
-API's USED:
+#API's USED:
 ~Custom YOLO Model (Backend):
 Description: A custom-trained YOLOv10n object detection model, built using the ultralytics framework, is used for identifying and classifying various types of e-waste from images. The dataset used to train the images is "https://universe.roboflow.com/shubha-to6ii/e-waste-1sn3k".
 Integration: The model is loaded and run on a FastAPI backend, which exposes a /predict_ewaste endpoint to the frontend.
@@ -23,7 +23,7 @@ Integration: The model is loaded and run on a FastAPI backend, which exposes a /
 Description: A modern, fast (high-performance), web framework for building APIs with Python 3.7+. It's used to create the RESTful endpoint that serves the YOLO model's predictions.
 Integration: Hosts the YOLO model and handles incoming image data, runs inference, and returns structured JSON responses.
 
-SETUP INSTRUCTIONS :
+#SETUP INSTRUCTIONS :
 To set up and run this project locally, follow these steps:
 1. Clone the repository in your terminal by the following command :
    git clone https://github.com/Ai-for-Impact-Group-4/ai-for-impact-final-day-intellectra.git
@@ -39,9 +39,9 @@ After running the uvicorn command, leave that terminal open, and open a NEW term
 6. In the NEW terminal, navigate back to the frontend of the project in following manner:
    cd D:\CODES\ai-for-impact-final-day-intellectra\frontend
 7. Go the index.html and run it on live server.
-# The web app : ECOCYCLE AI is ready to use and promote sustainability 
+The web app : ECOCYCLE AI is ready to use and promote sustainability 
 
-STRUCTURE OF THE REPO:
+#STRUCTURE OF THE REPO:
 ai-for-impact-final-day-intellectra/
 └── backend/
     ├── main.py
@@ -55,14 +55,14 @@ ai-for-impact-final-day-intellectra/
 └── README.md
 └── .gitignore
 
-WHY DOES THESE FILES EXIST ?
+#WHY DOES THESE FILES EXIST ?
 
 
-USAGE OF THE WEB APP:
+#USAGE OF THE WEB APP:
 1. Ensure both the backend server (on http://localhost:8000) and the frontend (your index.html file) are running.
 2. Click "Browse File" to upload an image of a potential e-waste item.
 3. Click "Analyze E-waste".
 4. The application will send the image to backend, process it with the YOLO model, and display the identified e-waste type, its hazards, and mock recycling store suggestions.
 
-📸 Screenshots
+#Screenshots
 
