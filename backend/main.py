@@ -6,7 +6,7 @@ from PIL import Image
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from ultralytics import YOLO # Make sure ultralytics is installed and supports your YOLO version
+from ultralytics import YOLO
 
 # --- FastAPI App Initialization ---
 app = FastAPI(
@@ -16,35 +16,24 @@ app = FastAPI(
 )
 
 # --- CORS Configuration ---
-# This is crucial for your frontend (running on a different port/origin)
-# to be able to communicate with this backend API.
-# In production, you should replace "*" with the specific origin(s) of your frontend.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins for development purposes.
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, PUT, DELETE, etc.).
-    allow_headers=["*"],  # Allows all headers.
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # --- Model Loading ---
-# CUSTOM ADDITION 1:
-# Ensure this path points to your trained YOLO model file.
-# Your model file (e.g., yolov8s_ewaste.pt) should be inside the 'models' directory
-# relative to this main.py file (e.g., backend/models/yolov8s_ewaste.pt).
-MODEL_PATH = r"D:\CODES\ai-for-impact-final-day-intellectra\backend\models\best (8).pt" # This is where the server gets the path
-model = YOLO(MODEL_PATH)
+MODEL_PATH = r"models/best (8).pt"
+model = None # Initialize model as None
 
-# Load the YOLO model when the FastAPI application starts up.
-# This ensures the model is loaded only once, improving performance.
 @app.on_event("startup")
 async def load_model():
     global model
     if not os.path.exists(MODEL_PATH):
         print(f"ERROR: YOLO model not found at: {MODEL_PATH}. Please ensure your model is in the 'models' directory.")
-        # In a production environment, you might want to raise an exception
-        # or exit the application if the model is critical and missing.
-        # For a hackathon MVP, we'll allow the app to start but predictions will fail.
+        # Consider sys.exit(1) here in a production environment if the model is critical.
         return
 
     try:
@@ -52,43 +41,100 @@ async def load_model():
         print(f"YOLO model loaded successfully from {MODEL_PATH}")
     except Exception as e:
         print(f"ERROR: Failed to load YOLO model from {MODEL_PATH}: {e}")
-        model = None # Ensure model is None if loading fails
+        model = None
 
-# --- Dummy E-waste Info Map ---
-# CUSTOM ADDITION 2:
-# IMPORTANT: The keys in this dictionary (e.g., 'laptop', 'smartphone')
-# MUST EXACTLY MATCH the class names that your trained YOLO model outputs.
-# If your model outputs 'mobile_phone' instead of 'smartphone', adjust accordingly.
-#'adapter', 'battery', 'cable', 'memory', 'pcb', 'phone', 'remote
+# --- E-waste Info Map ---
 ewaste_info_map = {
-    'cable': {
-        'hazards': 'Laptops contain heavy metals like lead, mercury, and cadmium, and brominated flame retardants. These are highly toxic if improperly disposed of and can pollute soil and water.'
+    "lcd monitor": { # Converted keys to lowercase for consistency
+        "materials": "Lead, Mercury, Cadmium, Brominated Flame Retardants (BFRs)",
+        "details": "LCD monitors contain mercury in their backlights, which is a neurotoxin. Lead in solder can harm the nervous system. Cadmium is a carcinogen and damages kidneys. BFRs are persistent organic pollutants.",
+        "hazard_level": 4
     },
-    'phone': {
-        'hazards': 'Smartphones contain lead, mercury, cadmium, arsenic, and brominated flame retardants. These substances can leach into soil and water, posing significant health risks.'
+    "crt monitor": {
+        "materials": "High levels of Lead, Barium, Mercury",
+        "details": "CRT monitors are particularly hazardous due to high concentrations of lead in their glass (up to 5-8 pounds per unit), which is a severe neurotoxin. They also contain barium and mercury, posing significant environmental and health risks if improperly disposed of.",
+        "hazard_level": 5
     },
-    'memory': {
-        'hazards': 'Old CRT TVs contain significant amounts of lead in their cathode ray tubes. Newer flat-screen TVs can contain mercury in backlights and other hazardous materials like lead and cadmium.'
+    "printer": {
+        "materials": "Lead, Mercury, Cadmium, Toner residue",
+        "details": "Printers can contain lead in solder, mercury in some components, and cadmium. Toner cartridges contain fine plastic particles and heavy metals that can be harmful if inhaled or released into the environment.",
+        "hazard_level": 3
     },
-    'battery': {
-        'hazards': 'Batteries (especially lithium-ion and nickel-cadmium) contain heavy metals like lead, cadmium, mercury, and lithium, which are highly toxic. They also pose fire risks if damaged.'
+    "battery": {
+        "materials": "Lithium, Lead, Cadmium, Mercury, Nickel (depending on type)",
+        "details": "Batteries pose significant risks. Lithium-ion batteries can cause fires if damaged and contain cobalt and nickel. Lead-acid batteries contain corrosive sulfuric acid and lead, a neurotoxin. Cadmium and mercury in other battery types are highly toxic and bioaccumulate.",
+        "hazard_level": 5
     },
-    'adapter': {
-        'hazards': 'Adapters primarily contain plastics, copper, and some trace amounts of hazardous materials. While less acutely toxic than other e-waste, they contribute to landfill waste and resource depletion.'
+    "cable": {
+        "materials": "PVC (Polyvinyl Chloride), Lead, Cadmium, Brominated Flame Retardants",
+        "details": "Cables often contain PVC, which releases dioxins when burned. Lead and cadmium are sometimes used in insulation and solder, posing neurotoxic and carcinogenic risks. BFRs are used as flame retardants and are persistent environmental pollutants.",
+        "hazard_level": 2
     },
-    'remote': {
-        'hazards': 'Printers contain plastics, metals, and residual ink/toner. Toner can be a respiratory irritant, and some components may contain lead or cadmium. Ink cartridges are also a significant waste concern.'
+    "no e-waste detected": { # Consistent key
+        "materials": "N/A (Not E-Waste)",
+        "details": "This item was not identified as e-waste. While not containing specific e-waste hazards, please ensure proper disposal according to local waste management guidelines to prevent general pollution.",
+        "hazard_level": 1
     },
-    'pcb': { # Example: If your model detects 'circuit_board'
-        'hazards': 'Circuit boards are highly complex and contain a wide array of hazardous materials including lead, mercury, cadmium, beryllium, and brominated flame retardants. They are very hazardous if not recycled properly.'
+    "computer": {
+        "materials": "Lead, Mercury, Cadmium, Chromium, Brominated Flame Retardants (BFRs), PVC",
+        "details": "Computers are complex and contain numerous hazardous materials. Lead in solder, mercury in LCD backlights, and cadmium are highly toxic. Chromium can be carcinogenic. BFRs are persistent environmental pollutants. PVC releases dioxins upon incineration.",
+        "hazard_level": 5
     },
-    'other_ewaste': { # A generic class for any e-waste not specifically categorized by your model
-        'hazards': 'Generic e-waste can contain a mix of plastics, metals, and various hazardous substances depending on the specific components. Proper disposal is crucial to prevent environmental contamination.'
+    "dryer": {
+        "materials": "Lead (solder), some PCBs, occasional Mercury switches, various plastics",
+        "details": "While less electronic than computers, dryers can contain lead in solder, small printed circuit boards (PCBs) with heavy metals, and older models might have mercury switches. Plastics and other metals should also be recycled responsibly.",
+        "hazard_level": 3
     },
-    'no e-waste detected': { # Special entry for when no e-waste is found
-        'hazards': 'This item was not identified as electronic waste. Therefore, specific e-waste hazards do not apply.'
+    "electronics": {
+        "materials": "Lead, Mercury, Cadmium, Brominated Flame Retardants (BFRs), PVC, Lithium",
+        "details": "This general category of electronics can contain a wide array of hazardous substances including heavy metals like lead, mercury, and cadmium which are toxic to human health and the environment. Brominated Flame Retardants (BFRs) are persistent pollutants, and lithium from batteries poses fire risks and environmental contamination.",
+        "hazard_level": 4
+    },
+    "headphone": {
+        "materials": "Plastics, Lead (solder), small PCBs, trace rare earth metals",
+        "details": "Headphones primarily consist of plastics and metals. Small amounts of lead may be present in solder on internal PCBs. They also contain tiny amounts of rare earth metals, which are valuable but mining can be environmentally intensive.",
+        "hazard_level": 2
+    },
+    "keyboard": {
+        "materials": "Plastics, Lead (solder), small PCBs, some metals",
+        "details": "Keyboards are mainly plastics, but also contain small circuit boards with lead solder and other metals. While the individual hazard level is lower, the sheer volume of discarded keyboards contributes to e-waste accumulation.",
+        "hazard_level": 2
+    },
+    "mobile": {
+        "materials": "Lithium-ion battery, Lead, Mercury, Cadmium, Arsenic, BFRs, rare earth metals",
+        "details": "Mobile phones are highly complex and contain numerous toxic elements. Lithium-ion batteries pose fire hazards and contain cobalt and nickel. Lead, mercury, cadmium, and arsenic are severe neurotoxins and carcinogens. BFRs and valuable rare earth metals are also present.",
+        "hazard_level": 5
+    },
+    "modem": {
+        "materials": "Lead (solder), Brominated Flame Retardants (BFRs), PVC, various plastics",
+        "details": "Modems contain PCBs with lead solder. Brominated Flame Retardants (BFRs) are often used in their plastic casings and internal components. PVC plastic can also be present, which creates dioxins if incinerated.",
+        "hazard_level": 3
+    },
+    "mouse": {
+        "materials": "Plastics, Lead (solder), small PCBs",
+        "details": "Computer mice are mostly plastics, but like keyboards, they contain small printed circuit boards (PCBs) that utilize lead solder. Proper recycling prevents these metals from leaching into the environment.",
+        "hazard_level": 2
+    },
+    "pcb": { # Printed Circuit Board
+        "materials": "Lead, Mercury, Cadmium, Brominated Flame Retardants (BFRs), Chromium, Arsenic, Beryllium",
+        "details": "Printed Circuit Boards are the core of most electronics and are highly hazardous. They contain a cocktail of heavy metals like lead, mercury, cadmium, and chromium, all of which are toxic. Beryllium and arsenic are also present, along with BFRs, making PCBs a major environmental concern.",
+        "hazard_level": 5
+    },
+    "pendrive": {
+        "materials": "Small PCB, flash memory (silicon, trace metals), plastics",
+        "details": "Pendrives contain a small printed circuit board with lead solder and flash memory chips with various trace metals. While small, the cumulative effect of improper disposal of many such devices contributes to environmental pollution.",
+        "hazard_level": 2
+    },
+    "remote": {
+        "materials": "Plastics, Lead (solder), small PCBs, batteries (often alkaline)",
+        "details": "Remote controls are largely plastic with a small internal PCB. Lead is present in solder. While they often use less hazardous alkaline batteries, any battery should be disposed of properly.",
+        "hazard_level": 1
+    },
+    "other_ewaste": {
+        "materials": "Various, depends on specific components", # Added materials for consistency
+        "details": "Generic e-waste can contain a mix of plastics, metals, and various hazardous substances depending on the specific components. Proper disposal is crucial to prevent environmental contamination.",
+        "hazard_level": 3 # Assigned a default hazard level
     }
-    # Add more entries here if your YOLO model has other specific e-waste classes.
 }
 
 
@@ -114,29 +160,22 @@ async def predict_ewaste(image_data: dict):
         if not base64_string:
             raise HTTPException(status_code=400, detail="No image data provided in the 'image' field.")
 
-        # Decode Base64 string to bytes
         img_bytes = base64.b64decode(base64_string)
-        # Open image using Pillow and ensure it's in RGB format
         img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
 
-        # Perform inference using the YOLO model
-        # CUSTOM ADDITION 3:
-        # Adjust 'conf' (confidence threshold) and 'iou' (NMS IoU threshold)
-        # based on your model's performance and desired sensitivity.
-        # 'save=False' prevents YOLO from saving prediction images to disk.
         results = model.predict(source=img, save=False, conf=0.4, iou=0.5)
 
         detections = []
         primary_ewaste_type = "no e-waste detected" # Default if nothing is found
+        highest_confidence = 0.0
 
-        # Process results from YOLO
         for r in results:
-            # r.boxes contains detected bounding boxes, confidence scores, and class IDs
             for box in r.boxes:
-                x1, y1, x2, y2 = map(float, box.xyxy[0]) # Bounding box coordinates (top-left, bottom-right)
-                confidence = float(box.conf[0])         # Confidence score of the detection
-                class_id = int(box.cls[0])              # Class ID
-                class_name = r.names[class_id]          # Class name (e.g., 'laptop', 'battery')
+                confidence = float(box.conf[0])
+                class_id = int(box.cls[0])
+                class_name = r.names[class_id].lower() # Convert class name to lowercase
+
+                x1, y1, x2, y2 = map(float, box.xyxy[0])
 
                 detections.append({
                     "class_name": class_name,
@@ -144,33 +183,30 @@ async def predict_ewaste(image_data: dict):
                     "bbox": [round(x1, 2), round(y1, 2), round(x2, 2), round(y2, 2)]
                 })
 
-        # Determine the primary e-waste type for the UI
-        # This simple logic picks the highest confidence detection that is in our info map.
-        if detections:
-            # Filter for detections that are actual e-waste types we have info for
-            ewaste_detections_filtered = [d for d in detections if d['class_name'] in ewaste_info_map and d['class_name'] != 'no e-waste detected']
+                # Determine the primary e-waste type based on highest confidence
+                if class_name in ewaste_info_map and confidence > highest_confidence:
+                    primary_ewaste_type = class_name
+                    highest_confidence = confidence
 
-            if ewaste_detections_filtered:
-                # Find the detection with the highest confidence among the filtered e-waste items
-                highest_conf_detection = max(ewaste_detections_filtered, key=lambda x: x['confidence'])
-                primary_ewaste_type = highest_conf_detection['class_name']
-            # If no e-waste detections were found among the filtered ones, primary_ewaste_type remains 'no e-waste detected'
+        # If after checking all detections, no e-waste was identified from the map,
+        # ensure primary_ewaste_type reflects "no e-waste detected" as per its initial value.
+        # This is already handled by the initial assignment and conditional updates.
 
-        # Return a JSON response with the prediction results
+        # Retrieve information for the primary e-waste type
+        primary_ewaste_info = ewaste_info_map.get(primary_ewaste_type, ewaste_info_map["no e-waste detected"])
+
         return JSONResponse(content={
             "status": "success",
             "message": "E-waste prediction completed.",
-            "primary_ewaste_type": primary_ewaste_type, # The single most relevant e-waste type
-            "detections": detections # All raw detections (can be used for drawing bounding boxes on frontend)
+            "primary_ewaste_type": primary_ewaste_type,
+            "primary_ewaste_info": primary_ewaste_info, # Added detailed info for the primary type
+            "detections": detections
         })
 
     except HTTPException as e:
-        # Re-raise FastAPI HTTP exceptions (e.g., 400 Bad Request)
         raise e
     except Exception as e:
-        # Catch any other unexpected errors during processing or inference
         print(f"Error during prediction: {e}")
-        # Return a 500 Internal Server Error response
         raise HTTPException(status_code=500, detail=f"Internal server error during prediction: {e}")
 
 @app.get("/hazards/{ewaste_type}")
@@ -178,9 +214,8 @@ async def get_hazards(ewaste_type: str):
     """
     Returns hazard information for a specific e-waste type from the predefined map.
     """
-    # Convert input type to lowercase to match dictionary keys
     info = ewaste_info_map.get(ewaste_type.lower())
     if info:
-        return JSONResponse(content={"ewaste_type": ewaste_type, "hazards": info['hazards']})
-    # If the e-waste type is not found in the map, return a 404 Not Found error
+        # Return all details from the ewaste_info_map, not just 'hazards'
+        return JSONResponse(content={"ewaste_type": ewaste_type, **info})
     raise HTTPException(status_code=404, detail=f"Hazard information not found for e-waste type: {ewaste_type}.")
