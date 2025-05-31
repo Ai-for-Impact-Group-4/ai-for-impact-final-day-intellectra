@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # --- Model Loading ---
-MODEL_PATH = r"models/best (8).pt"
+MODEL_PATH = r"models/best (10).pt"
 model = None # Initialize model as None
 
 @app.on_event("startup")
