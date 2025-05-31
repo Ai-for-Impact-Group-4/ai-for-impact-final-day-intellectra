@@ -32,8 +32,8 @@ app.add_middleware(
 # Ensure this path points to your trained YOLO model file.
 # Your model file (e.g., yolov8s_ewaste.pt) should be inside the 'models' directory
 # relative to this main.py file (e.g., backend/models/yolov8s_ewaste.pt).
-MODEL_PATH = "D:\CODES\ai-for-impact-final-day-intellectra\backend\models\best (8).pt" # This is where the server gets the path
-model = YOLO(model_path)
+MODEL_PATH = r"D:\CODES\ai-for-impact-final-day-intellectra\backend\models\best (8).pt" # This is where the server gets the path
+model = YOLO(MODEL_PATH)
 
 # Load the YOLO model when the FastAPI application starts up.
 # This ensures the model is loaded only once, improving performance.
