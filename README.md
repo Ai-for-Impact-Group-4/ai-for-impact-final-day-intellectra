@@ -87,6 +87,8 @@ style.css : The stylist of the app, which brings lights and colors to the app
 ![WhatsApp Image 2025-05-31 at 17 45 50_0a35f0f2](https://github.com/user-attachments/assets/14e5bd9d-1c4f-4d97-9b26-e69165f7ee04)
 ![WhatsApp Image 2025-05-31 at 17 46 22_8ce77dc9](https://github.com/user-attachments/assets/2f8db2de-5a3b-41a6-960f-ae9ab7b53a3c)
 ![WhatsApp Image 2025-05-31 at 17 46 04_60d6bfa7](https://github.com/user-attachments/assets/1a95b0e0-5faa-41ff-bbc3-f9b44ccab867)
+![image](https://github.com/user-attachments/assets/3daa4255-0671-4c5b-a0da-bed15b583112)
+![image](https://github.com/user-attachments/assets/cf359ba0-ddab-49b3-a513-6705ad917aba)
 
 Our app ECOCYCLE AI in working : https://drive.google.com/file/d/1geMZtaKP0rLGhguG_mOPk2Of1XxFZCRA/view?usp=drivesdk
 Presentation : https://docs.google.com/presentation/d/1gi_otsgXMwNEsKS0PcXmoix4V9pmsiJ7/edit?usp=drivesdk&ouid=108807172446367616214&rtpof=true&sd=true
