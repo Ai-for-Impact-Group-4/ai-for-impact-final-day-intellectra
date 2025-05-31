@@ -9,9 +9,13 @@ Our "E-waste Identifier & Recycler" is an AI-powered web application designed to
 
 #THE APPLICATION HAS THE FOLLOWING FLOW :
 ~Image Upload: Users can upload an image of an item they suspect might be an e-waste.
+
 ~AI-Powered Identification: A custom-trained YOLO model(Yolov10n), deployed on a FastAPI backend, analyzes the uploaded image to determine if it is an e-waste and, if so, its specific type (e.g., laptop, smartphone, battery).
-Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer', 'Electronics', 'Headphone', 'Keyboard', 'Mobile', 'Modem', 'Mouse', 'PCB', 'Pendrive', 'Remote' and the map50 score is ~70%
+
+Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer', 'Electronics', 'Headphone', 'Keyboard', 'Mobile', 'Modem', 'Mouse', 'PCB', 'Pendrive', 'Remote' and the map50 score is ~70%.
+
 ~Hazard Information: Based on the identified e-waste type, the application displays relevant information about the potential environmental and health hazards associated with that specific item.
+
 ~Recycling Suggestions: The application provides a list of mock nearby recycling/selling stores, guiding users towards proper disposal channels. (For the MVP, this uses mock data, but is designed for future integration with real-time location services).
 This solution leverages cutting-edge AI for image recognition, combined with a user-friendly interface, to promote responsible e-waste management and contribute to environmental sustainability.
 
@@ -20,6 +24,7 @@ This solution leverages cutting-edge AI for image recognition, combined with a u
 Description: A custom-trained YOLOv10n object detection model, built using the ultralytics framework, is used for identifying and classifying various types of e-waste from images. The dataset used to train the images is "https://universe.roboflow.com/shubha-to6ii/e-waste-1sn3k".
 Integration: The model is loaded and run on a FastAPI backend, which exposes a /predict_ewaste endpoint to the frontend.
 Kaggle notebook where the model trained: https://www.kaggle.com/code/kashishthadani/ai-for-impact/edit
+
 ~FastAPI (Backend Framework):
 Description: A modern, fast (high-performance), web framework for building APIs with Python 3.7+. It's used to create the RESTful endpoint that serves the YOLO model's predictions.
 Integration: Hosts the YOLO model and handles incoming image data, runs inference, and returns structured JSON responses.
