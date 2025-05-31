@@ -32,7 +32,7 @@ app.add_middleware(
 # Ensure this path points to your trained YOLO model file.
 # Your model file (e.g., yolov8s_ewaste.pt) should be inside the 'models' directory
 # relative to this main.py file (e.g., backend/models/yolov8s_ewaste.pt).
-MODEL_PATH = os.path.join("models", "yolov8s_ewaste.pt")
+MODEL_PATH = os.path.join("models", "D:\CODES\ai-for-impact-final-day-intellectra\backend\models\best (8).pt")
 
 # Initialize model variable
 model = None
@@ -61,32 +61,27 @@ async def load_model():
 # IMPORTANT: The keys in this dictionary (e.g., 'laptop', 'smartphone')
 # MUST EXACTLY MATCH the class names that your trained YOLO model outputs.
 # If your model outputs 'mobile_phone' instead of 'smartphone', adjust accordingly.
+#'adapter', 'battery', 'cable', 'memory', 'pcb', 'phone', 'remote
 ewaste_info_map = {
-    'laptop': {
+    'cable': {
         'hazards': 'Laptops contain heavy metals like lead, mercury, and cadmium, and brominated flame retardants. These are highly toxic if improperly disposed of and can pollute soil and water.'
     },
-    'smartphone': {
+    'phone': {
         'hazards': 'Smartphones contain lead, mercury, cadmium, arsenic, and brominated flame retardants. These substances can leach into soil and water, posing significant health risks.'
     },
-    'tv': {
+    'memory': {
         'hazards': 'Old CRT TVs contain significant amounts of lead in their cathode ray tubes. Newer flat-screen TVs can contain mercury in backlights and other hazardous materials like lead and cadmium.'
     },
     'battery': {
         'hazards': 'Batteries (especially lithium-ion and nickel-cadmium) contain heavy metals like lead, cadmium, mercury, and lithium, which are highly toxic. They also pose fire risks if damaged.'
     },
-    'charger': {
-        'hazards': 'Chargers primarily contain plastics, copper, and some trace amounts of hazardous materials. While less acutely toxic than other e-waste, they contribute to landfill waste and resource depletion.'
+    'adapter': {
+        'hazards': 'Adapters primarily contain plastics, copper, and some trace amounts of hazardous materials. While less acutely toxic than other e-waste, they contribute to landfill waste and resource depletion.'
     },
-    'keyboard': {
-        'hazards': 'Keyboards contain various plastics and metals. Some older models might contain lead in solders. The primary concern is the volume of plastic waste they generate.'
-    },
-    'mouse': {
-        'hazards': 'Similar to keyboards, computer mice are mostly composed of plastic and metal. Hazardous materials are minimal, but they still contribute to the growing electronic waste stream.'
-    },
-    'printer': {
+    'remote': {
         'hazards': 'Printers contain plastics, metals, and residual ink/toner. Toner can be a respiratory irritant, and some components may contain lead or cadmium. Ink cartridges are also a significant waste concern.'
     },
-    'circuit_board': { # Example: If your model detects 'circuit_board'
+    'pcb': { # Example: If your model detects 'circuit_board'
         'hazards': 'Circuit boards are highly complex and contain a wide array of hazardous materials including lead, mercury, cadmium, beryllium, and brominated flame retardants. They are very hazardous if not recycled properly.'
     },
     'other_ewaste': { # A generic class for any e-waste not specifically categorized by your model
