@@ -10,7 +10,7 @@ Our "E-waste Identifier & Recycler" is an AI-powered web application designed to
 #THE APPLICATION HAS THE FOLLOWING FLOW :
 ~Image Upload: Users can upload an image of an item they suspect might be an e-waste.
 ~AI-Powered Identification: A custom-trained YOLO model(Yolov10n), deployed on a FastAPI backend, analyzes the uploaded image to determine if it is an e-waste and, if so, its specific type (e.g., laptop, smartphone, battery).
-Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer', 'Electronics', 'Headphone', 'Keyboard', 'Mobile', 'Modem', 'Mouse', 'PCB', 'Pendrive', 'Remote' and the map50-95 score is 
+Right now, the YOLO model is trained on 11 classes, which are 'Computer', 'Dryer', 'Electronics', 'Headphone', 'Keyboard', 'Mobile', 'Modem', 'Mouse', 'PCB', 'Pendrive', 'Remote' and the map50 score is ~70%
 ~Hazard Information: Based on the identified e-waste type, the application displays relevant information about the potential environmental and health hazards associated with that specific item.
 ~Recycling Suggestions: The application provides a list of mock nearby recycling/selling stores, guiding users towards proper disposal channels. (For the MVP, this uses mock data, but is designed for future integration with real-time location services).
 This solution leverages cutting-edge AI for image recognition, combined with a user-friendly interface, to promote responsible e-waste management and contribute to environmental sustainability.
